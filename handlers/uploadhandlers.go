@@ -85,5 +85,5 @@ func HandleUpload(c echo.Context) error {
 		return c.JSON(http.StatusInternalServerError, &uploadResponse{Status: "error", Error: err})
 	}
 
-	return c.JSON(http.StatusOK, &uploadResponse{Status: "ok", Error: nil, Data: map[string]interface{}{"URL": resultURL}})
+	return c.JSON(http.StatusOK, &uploadResponse{Status: "ok", Error: nil, Data: map[string]interface{}{"url": resultURL}})
 }
