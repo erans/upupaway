@@ -1,0 +1,67 @@
+debugLevel: info
+
+buckets:
+  - name: exampleGSBucket1
+    type: gs
+    bucket: mybucket
+    # Path inside the bucket to store files
+    path: subdir1/
+    projectId: my-project
+    # - "background" for use when running inside a compute instance
+    #    or where "GOOGLE_APPLICATION_CREDENTIALS" environment variable is set
+    # - "file" for use when supplying a service account JSON file (combined with 'serviceAccountJSONFile' key)
+    securitySource: file
+    serviceAccountJSONFile: path/to/service.json
+    # allUsers - accessible publicly to all Users
+    # allAuthenticatedUsers - accessible only to authenticated users
+    defaultACLEntity: allUsers
+    # owner - applies to owner only
+    # reader - applies to reader only
+    # writer - applies to writer only
+    defaultACLRole: reader
+
+  - name: exampleGSBucket2
+    type: gs
+    bucket: mybucket
+    # Path inside the bucket to store files
+    path: subdir2/
+    projectId: my-project
+    securitySource: background
+
+  - name: exampleS3_1
+    type: s3
+    region: us-west-1
+    bucket: mybucket
+    path: subdir1/
+    accessKeyId: AKIAIPAT2SMVV3MJ5YIQ
+    secretAccessKey: +dYPN5EbOmb9hRVt7mwYfDZQGOvhFgYNl03o1YYm
+
+paths:
+  - path: /u/p1/
+    bucketName: exampleGSBucket1
+  - path: /u/p2/
+    bucketName: exampleGSBucket2
+  - path: /u/p3/
+    bucketName: exampleS3_1
+
+# 'storage' is used to temporarily store upload ID that are generate after the
+# the call to the /prepare method
+#
+# Currently supported storages are:
+# - inmemory (stored locally inside the process memory)
+# - redis (stored on a local or remote redis service)
+# - memcache (stored on a local or remote memcached service)
+storage:
+  activeStorage: memcache
+  inmemory:
+    size: 1000
+    expiration: 3600
+  redis:
+    host: localhost
+    port: 6379
+    db: 0
+    expiration: 3600
+  memcache:
+    host: localhost
+    port: 11211
+    expiration: 3600
