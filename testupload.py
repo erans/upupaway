@@ -2,22 +2,47 @@ import os
 import sys
 import requests
 import mimetypes
+import argparse
 
 server_url = "http://localhost:8000"
 
 upload_file = None
 
-if len(sys.argv) > 2:
-    server_url = sys.argv[1]
-    upload_file = sys.argv[2]
-else:
-    upload_file = sys.argv[1]
+def prepare_upload(server):
+        r = requests.get("{0}/prepare".format(server_url))
+        if r.status_code != 200:
+            raise Exception("Failed to fetch an Upload ID")
 
-upload_id = requests.get("{0}/prepare".format(server_url)).json()["result"]["uploadId"]
-print "Got Upload ID: {0}".format(upload_id)
+        upload_id = r.json().get("result", {}).get("uploadId", None)
+        if upload_id is None:
+            raise Exception("Failed to get a valid Upload ID")
 
-mime_type = mimetypes.guess_type(upload_file)
-print "Uploading {0}   Content-Type: {1}   Size: {2}".format(upload_file, mime_type[0], os.path.getsize(upload_file))
+        return upload_id
 
-r = requests.post("{0}/u/p2/?uid={1}".format(server_url, upload_id), files={ "file" : (os.path.basename(upload_file), open(upload_file, "rb"), mime_type[0]) })
-print r.status_code, r.text
+def preform_upload(server, server_path, upload_id, upload_file):
+    mime_type = mimetypes.guess_type(upload_file)
+    if not mime_type:
+        mime_type = "application/octet-stream"
+    else:
+        mime_type = mime_type[0]
+
+    r = requests.post("{0}{1}?uid={2}".format(server, server_path, upload_id), files={ "file" : (os.path.basename(upload_file), open(upload_file, "rb"), mime_type) })
+    if r.status_code != 200:
+        raise Exception("Upload failed. Status={0}  Reason={1}".format(r.status_code, r.text))
+
+    return r.json()
+
+if __name__ == "__main__":
+    parser = argparse.ArgumentParser(description="Test Uploads to Up, Up and Away (upupaway) upload micro service")
+    parser.add_argument("--server", help="Server URL (default: http://localhost:8000)", default="http://localhost:8000")
+    parser.add_argument("file", help="File to upload")
+    parser.add_argument("path", help="Server Upload Path")
+
+    args = parser.parse_args()
+
+    upload_id = prepare_upload(args.server)
+    response = preform_upload(args.server, args.path, upload_id, args.file)
+    if response and response.get("status", "") == "ok":
+        print "URL: {0}".format(response.get("data",{}).get("url"))
+
+    print "Done"
