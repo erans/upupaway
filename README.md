@@ -17,7 +17,7 @@ Up, up and Away (upupaway) is a cloud upload micro service. Files are streamed d
 - [AWS S3](https://aws.amazon.com/s3/)
 
 ## TODO
-- Define a way to protect calls to /preapre
+- Define a way to protect calls to /preapre - **NOTE: *prepare is currently completely unprotected and can be called by anyone.* **
 - Allow sending ACL on the request URL
 - Allow setting S3 default ACL in config
 - Support Azure Storage
