@@ -1,0 +1,9 @@
+redis:
+  image: redis:latest
+  ports:
+    - 6379:6379
+
+memcache:
+  image: memcached:latest
+  ports:
+    - 11211:11211
