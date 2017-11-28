@@ -38,9 +38,10 @@ func (g *GoogleStorage) getClient(ctx context.Context) (*storage.Client, error) 
 
 	if g.SecuritySource == SecuritySourceFile {
 		options = option.WithServiceAccountFile(g.ServiceAccountJSONFile)
+		return storage.NewClient(ctx, options)
 	}
 
-	return storage.NewClient(ctx, options)
+	return storage.NewClient(ctx)
 }
 
 // Upload file to a Google Storage bucket
