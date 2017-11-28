@@ -9,6 +9,11 @@ all: lint vet test build ## Run the tests and build the binary.
 build: ## Build the binary.
 	go build -o ./bin/upupaway
 
+buildimage:
+	CGO_ENABLED=0 GOOS=linux go build -a -o ./bin/upupaway
+	docker build --no-cache=true --rm --tag upupaway .
+	rm -rf ./bin/
+
 run: ## Run it
 	./bin/upupaway -c ./config-dev.yml
 
