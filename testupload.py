@@ -4,14 +4,12 @@ import requests
 import mimetypes
 import argparse
 
-server_url = "http://localhost:8000"
-
 upload_file = None
 
 def prepare_upload(server):
-        r = requests.get("{0}/prepare".format(server_url))
+        r = requests.get("{0}/prepare".format(server))
         if r.status_code != 200:
-            raise Exception("Failed to fetch an Upload ID")
+            raise Exception("Failed to fetch an Upload ID. Status={0}  Reason={1}".format(r.status_code, r.text))
 
         upload_id = r.json().get("result", {}).get("uploadId", None)
         if upload_id is None:
