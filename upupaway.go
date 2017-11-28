@@ -2,7 +2,6 @@ package main
 
 import (
 	"fmt"
-	"net/http"
 
 	"github.com/erans/upupaway/buckethandlers"
 	"github.com/erans/upupaway/config"
@@ -71,10 +70,7 @@ func main() {
 
 	e.Logger.SetLevel(getDebugLevelByName(cfg.DebugLevel))
 
-	e.GET("/", func(c echo.Context) error {
-		return c.String(http.StatusOK, "Hello, World! %s")
-	})
-
+	e.GET("/health", handlers.HandleHealth)
 	e.GET("/prepare", handlers.HandlePrepareUpload)
 
 	// Setup upload paths
