@@ -16,17 +16,11 @@ func Init(e *echo.Echo, c *config.Config) {
 	// Setup upload paths
 	for _, p := range cfg.Paths {
 		var path = p.Path
+
+		if p.AccessControlAllowOrigin != "" {
+			e.OPTIONS(path, HandleCORS)
+		}
+
 		e.POST(path, HandleUpload)
 	}
-}
-
-// TODO: build an index of path -> path config to make this faster and more predictable
-func getPathAccessControlAllowOriginByPath(path string) string {
-	for _, p := range cfg.Paths {
-		if p.Path == path {
-			return p.AccessControlAllowOrigin
-		}
-	}
-
-	return ""
 }

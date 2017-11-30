@@ -6,16 +6,21 @@ import (
 	yaml "gopkg.in/yaml.v2"
 )
 
+// PathConfig provides the configuration for a single path in the system
+type PathConfig struct {
+	Path                      string `yaml:"path"`
+	BucketName                string `yaml:"bucketName"`
+	AccessControlAllowOrigin  string `yaml:"accessControlAllowOrigin"`
+	AccessControlAllowMethods string `yaml:"accessControlAllowMethods"`
+	AccessControlMaxAge       string `yaml:"accessControlMaxAge"`
+}
+
 // Config provides a configuration struct for the server
 type Config struct {
 	DebugLevel string                   `yaml:"debugLevel"`
 	Buckets    []map[string]interface{} `yaml:"buckets"`
-	Paths      []struct {
-		Path                     string `yaml:"path"`
-		BucketName               string `yaml:"bucketName"`
-		AccessControlAllowOrigin string `yaml:"accessControlAllowOrigin"`
-	} `yaml:"paths"`
-	Storage struct {
+	Paths      []PathConfig             `yaml:"paths"`
+	Storage    struct {
 		ActiveStorage string `yaml:"activeStorage"`
 		InMemory      struct {
 			Size       int `yaml:"size"`
@@ -35,6 +40,8 @@ type Config struct {
 	} `yaml:"storage"`
 }
 
+var cfg *Config
+
 // LoadConfig loads the config file
 func LoadConfig(configFile string) (*Config, error) {
 	var data []byte
@@ -49,4 +56,31 @@ func LoadConfig(configFile string) (*Config, error) {
 	}
 
 	return &c, nil
+}
+
+// SetGlobalConfig sets the global config
+func SetGlobalConfig(c *Config) {
+	cfg = c
+}
+
+// GetGlobalConfig gets the global config
+func GetGlobalConfig() *Config {
+	return cfg
+}
+
+var pathConfigIndex = map[string]PathConfig{}
+
+// GetPathConfigByPath returns the path config by the given path
+func GetPathConfigByPath(path string) *PathConfig {
+	if len(pathConfigIndex) == 0 {
+		for _, p := range GetGlobalConfig().Paths {
+			pathConfigIndex[p.Path] = p
+		}
+	}
+
+	if c, ok := pathConfigIndex[path]; ok {
+		return &c
+	}
+
+	return nil
 }

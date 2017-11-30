@@ -48,6 +48,8 @@ func main() {
 		return
 	}
 
+	config.SetGlobalConfig(cfg)
+
 	buckethandlers.InitBuckets(cfg)
 	storage.InitActiveStorage(cfg)
 

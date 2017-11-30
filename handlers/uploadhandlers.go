@@ -6,6 +6,7 @@ import (
 	"net/http"
 
 	"github.com/erans/upupaway/buckethandlers"
+	"github.com/erans/upupaway/config"
 	"github.com/erans/upupaway/context"
 	"github.com/erans/upupaway/storage"
 	"github.com/erans/upupaway/utils"
@@ -21,6 +22,24 @@ type uploadResponse struct {
 	Status string                 `json:"status"`
 	Error  error                  `json:"error"`
 	Data   map[string]interface{} `json:"data"`
+}
+
+// HandleCORS sets up CROS response
+func HandleCORS(c echo.Context) error {
+	pathConfig := config.GetPathConfigByPath(c.Request().URL.Path)
+
+	if pathConfig != nil {
+		if pathConfig.AccessControlAllowOrigin != "" {
+			c.Response().Header().Set("Access-Control-Allow-Origin", pathConfig.AccessControlAllowOrigin)
+		}
+		if pathConfig.AccessControlAllowMethods != "" {
+			c.Response().Header().Set("Access-Control-Allow-Methods", pathConfig.AccessControlAllowMethods)
+		}
+		if pathConfig.AccessControlMaxAge != "" {
+			c.Response().Header().Set("Access-Control-Max-Age", "86400")
+		}
+	}
+	return c.String(http.StatusOK, "")
 }
 
 // HandlePrepareUpload is called before starting an active upload
@@ -78,11 +97,6 @@ func HandleUpload(c echo.Context) error {
 
 	if filename == "" {
 		return c.String(http.StatusBadRequest, "Missing uploaded filename")
-	}
-
-	var accessControlAllowOrigin = getPathAccessControlAllowOriginByPath(c.Request().URL.Path)
-	if accessControlAllowOrigin != "" {
-		c.Response().Header().Set("Access-Control-Allow-Origin", accessControlAllowOrigin)
 	}
 
 	var resultURL string
