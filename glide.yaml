@@ -24,3 +24,11 @@ import:
 - package: github.com/bradfitz/gomemcache
   subpackages:
   - memcache
+- package: github.com/Azure/azure-sdk-for-go
+  version: ^11.2.2-beta
+  subpackages:
+  - '...'
+- package: github.com/Azure/go-autorest
+  version: ^9.4.1
+  subpackages:
+  - autorest

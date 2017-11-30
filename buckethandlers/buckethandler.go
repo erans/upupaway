@@ -33,6 +33,8 @@ func InitBuckets(cfg *config.Config) {
 			bucket = NewGoogleStorage(b)
 		case "s3":
 			bucket = NewAWSS3(b)
+		case "as":
+			bucket = NewAzureStorage(b)
 		}
 
 		if bucket != nil {
