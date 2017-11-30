@@ -80,6 +80,11 @@ func HandleUpload(c echo.Context) error {
 		return c.String(http.StatusBadRequest, "Missing uploaded filename")
 	}
 
+	var accessControlAllowOrigin = getPathAccessControlAllowOriginByPath(c.Request().URL.Path)
+	if accessControlAllowOrigin != "" {
+		c.Response().Header().Set("Access-Control-Allow-Origin", accessControlAllowOrigin)
+	}
+
 	var resultURL string
 	if resultURL, err = bucketHandler.Upload(c, uploadID, filename, contentType, fileStream); err != nil {
 		return c.JSON(http.StatusInternalServerError, &uploadResponse{Status: "error", Error: err})

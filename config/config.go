@@ -11,8 +11,9 @@ type Config struct {
 	DebugLevel string                   `yaml:"debugLevel"`
 	Buckets    []map[string]interface{} `yaml:"buckets"`
 	Paths      []struct {
-		Path       string `yaml:"path"`
-		BucketName string `yaml:"bucketName"`
+		Path                     string `yaml:"path"`
+		BucketName               string `yaml:"bucketName"`
+		AccessControlAllowOrigin string `yaml:"accessControlAllowOrigin"`
 	} `yaml:"paths"`
 	Storage struct {
 		ActiveStorage string `yaml:"activeStorage"`

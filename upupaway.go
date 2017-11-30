@@ -70,14 +70,7 @@ func main() {
 
 	e.Logger.SetLevel(getDebugLevelByName(cfg.DebugLevel))
 
-	e.GET("/health", handlers.HandleHealth)
-	e.GET("/prepare", handlers.HandlePrepareUpload)
-
-	// Setup upload paths
-	for _, p := range cfg.Paths {
-		var path = p.Path
-		e.POST(path, handlers.HandleUpload)
-	}
+	handlers.Init(e, cfg)
 
 	e.Logger.Fatal(e.Start(fmt.Sprintf(":%s", *port)))
 }
