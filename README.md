@@ -55,7 +55,8 @@ Suggested usage would be to make a call to `/prepare`, get the UploadID, generat
 ## Running Under Kubernetes
 - The best way to run the mico service under Kubernetes with custom configuration is to update the configuration file as a configmap:
 ```
-kubectl create configmap upupaway-config --from-file=upupaway.yml```
+kubectl create configmap upupaway-config --from-file=upupaway.yml
+```
 
 You can then mount `upupaway-config` as a volume inside your container and point to it using an environment varaible `UUA_CFG`. For example:
 ```
