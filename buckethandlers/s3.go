@@ -3,6 +3,7 @@ package buckethandlers
 import (
 	"fmt"
 	"mime/multipart"
+	"net/url"
 	"path"
 
 	"github.com/aws/aws-sdk-go/aws"
@@ -33,7 +34,7 @@ func (awsS3 *AWSS3) Upload(c echo.Context, uploadID string, name string, content
 		return "", fmt.Errorf("Failed to create S3 session")
 	}
 
-	objectKey := fmt.Sprintf("%s/%s", uploadID, name)
+	objectKey := fmt.Sprintf("%s/%s", uploadID, url.PathEscape(name))
 	if awsS3.Path != "" {
 		objectKey = path.Join(awsS3.Path, objectKey)
 	}
