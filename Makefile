@@ -32,3 +32,7 @@ vet: # Vet the code
 
 test: ## Run tests.
 	go test -v $(CHECK_FILES)
+
+pushimage: ## Push image to Docker hub
+	docker tag upupaway $(DOCKER_ID_USER)/upupaway:latest
+	docker push erans/upupaway
