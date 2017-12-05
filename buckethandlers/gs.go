@@ -5,7 +5,6 @@ import (
 	"fmt"
 	"io"
 	"mime/multipart"
-	"net/url"
 	"strings"
 
 	"cloud.google.com/go/storage"
@@ -57,7 +56,7 @@ func (g *GoogleStorage) Upload(c echo.Context, uploadID string, name string, con
 	}
 
 	bucketHandle := client.Bucket(g.BucketName)
-	objectName := fmt.Sprintf("%s%s/%s", g.Path, uploadID, url.PathEscape(name))
+	objectName := fmt.Sprintf("%s%s/%s", g.Path, uploadID, name)
 	object := bucketHandle.Object(objectName)
 	objectWriter := object.NewWriter(ctx)
 	objectWriter.ACL = []storage.ACLRule{{Entity: g.DefaultACLEntity, Role: g.DefaultACLRole}}

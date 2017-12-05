@@ -3,7 +3,6 @@ package buckethandlers
 import (
 	"fmt"
 	"mime/multipart"
-	"net/url"
 	"path"
 
 	storage "github.com/Azure/azure-sdk-for-go/storage"
@@ -47,7 +46,7 @@ func (a *AzureStorage) Upload(c echo.Context, uploadID string, name string, cont
 		return "", fmt.Errorf("Container is missing. Check configuration")
 	}
 
-	var blobName = path.Join(uploadID, url.PathEscape(name))
+	var blobName = path.Join(uploadID, name)
 	if a.Path != "" {
 		blobName = path.Join(a.Path, blobName)
 	}
