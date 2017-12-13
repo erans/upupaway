@@ -16,6 +16,7 @@ Up, up and Away (upupaway) is a cloud upload micro service. Files are streamed d
 - [Google Storage](https://cloud.google.com/storage/)
 - [AWS S3](https://aws.amazon.com/s3/)
 - [Azure Storage](https://azure.microsoft.com/en-us/services/storage/)
+- [DigitalOcean Spaces](https://www.digitalocean.com/products/object-storage/)
 
 ## TODO
 - Define a way to protect calls to /prepare - <b>NOTE: <i>prepare is currently completely unprotected and can be called by anyone</i>.</b>
@@ -24,7 +25,6 @@ Up, up and Away (upupaway) is a cloud upload micro service. Files are streamed d
 - Allow setting Azure default ACL in config
 - Allow setting default meta-data per bucket in config
 - Allow sending meta-data on the request URL
-- Support Digital Ocean Object Storage
 
 ## Usage - Configuration
 See [`config-example.yml`](https://github.com/erans/upupaway/blob/master/config-example.yml) for an example of the configuration.
