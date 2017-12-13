@@ -35,6 +35,8 @@ func InitBuckets(cfg *config.Config) {
 			bucket = NewAWSS3(b)
 		case "as":
 			bucket = NewAzureStorage(b)
+		case "dos":
+			bucket = NewDigitalOceanSpaces(b)
 		}
 
 		if bucket != nil {

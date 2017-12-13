@@ -32,3 +32,5 @@ import:
   version: ^9.4.1
   subpackages:
   - autorest
+- package: github.com/minio/minio-go
+  version: ^4.0.3

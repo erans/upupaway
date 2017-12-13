@@ -36,6 +36,29 @@ buckets:
     accessKeyId: xxx
     secretAccessKey: yyy
 
+  - name: exampleDigitalOceanSpaces_1
+    type: dos
+    # region is the region part as specified by Digital Ocean such as "nyc3" or "ams3"
+    region: nyc3
+    # bucket - the bucket to which we want to upload data
+    bucket: uuatest
+    # a default sub-directory that will always be appended to the upload path
+    path: subdir1/
+    # The access key and secret access key. It is recommended to use environment
+    # variable instead. If you have more than one set of keys to various buckets
+    # such as in a multi tenant environment, you can define the environment variable
+    # from which to read the access key and secret (see acccessKeyEnvKey and
+    # secretAccessKeyEnvKey below). By default, not specifying an access key
+    # or a secret access key code will default to trying to read from the environment
+    # default keys of DO_ACCESS_KEY and DO_SECRET_ACCESS_KEY
+    accessKey: XXXX
+    secretAccessKey: YYYY
+    # Alternatively, instead of putting the access keys in the config you can
+    # configure the names of the environment variables that will contain the values
+    accessKeyEnvKey: DO_ACCESS_KEY
+    secretAccessKeyEnvKey: DO_SECRET_ACCESS_KEY
+
+
 paths:
   - path: /u/p1/
     bucketName: exampleGSBucket1
@@ -43,6 +66,8 @@ paths:
     bucketName: exampleGSBucket2
   - path: /u/p3/
     bucketName: exampleS3_1
+  - path: /u/p4/
+    bucketName: exampleDigitalOceanSpaces_1
 
 # 'storage' is used to temporarily store upload ID that are generate after the
 # the call to the /prepare method
