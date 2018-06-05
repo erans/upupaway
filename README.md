@@ -1,6 +1,8 @@
 # upupaway - Up, up and away! - a cloud upload micro service
 
-Written by Eran Sandler &copy; 2017
+Written by Eran Sandler &copy; 2018
+
+![Thumbla](examples/img/upupaway-logo.png)
 
 Up, up and Away (upupaway) is a cloud upload micro service. Files are streamed directly to the storage service bucket without storing anything on the local server.
 
