@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 
+	kingpin "github.com/alecthomas/kingpin/v2"
 	"github.com/erans/upupaway/buckethandlers"
 	"github.com/erans/upupaway/config"
 	"github.com/erans/upupaway/context"
@@ -11,8 +12,7 @@ import (
 	"github.com/labstack/echo"
 	"github.com/labstack/echo/middleware"
 	"github.com/labstack/gommon/log"
-	"github.com/satori/go.uuid"
-	kingpin "gopkg.in/alecthomas/kingpin.v2"
+	uuid "github.com/satori/go.uuid"
 )
 
 var (
