@@ -65,7 +65,7 @@ func main() {
 
 	e.Use(func(h echo.HandlerFunc) echo.HandlerFunc {
 		return func(c echo.Context) error {
-			cc := &context.UpContext{c, cfg}
+			cc := &context.UpContext{Context: c, Config: cfg}
 			return h(cc)
 		}
 	})

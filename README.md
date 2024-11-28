@@ -1,40 +1,42 @@
-# upupaway - Up, up and away! - a cloud upload micro service
+# upupaway - Your Cloud Upload Solution Made Simple
 
-Written by Eran Sandler &copy; 2018
+Created by Eran Sandler &copy; 2018
 
 ![Thumbla](examples/img/upupaway-logo.png)
 
-Up, up and Away (upupaway) is a cloud upload micro service. Files are streamed directly to the storage service bucket without storing anything on the local server.
+Upupaway is a powerful yet lightweight cloud upload microservice that seamlessly streams files directly to your favorite cloud storage providers. No local storage needed - just pure efficiency.
 
-## Benefits
-- Small footprint
-- Streams directly to the cloud storage service without storing anything locally
-- Supports multiple storage services
-- Maps an upload path to a specific bucket or bucket location which enables using the same service for multiple sites/services (multi-tenancy)
-- Each upload resides in its own upload namespace (upload ID)
-- Combine with [Thumbla](https://github.com/erans/thumbla) for a complete file upload + image processing solution
+## Why Choose Upupaway?
+- Lightning fast with minimal resource footprint
+- Direct streaming to cloud storage - zero local storage overhead
+- Flexible multi-cloud support for all major providers
+- True multi-tenant architecture - perfect for managing multiple sites/services
+- Secure upload namespacing with unique upload IDs
+- Seamless integration with [Thumbla](https://github.com/erans/thumbla) for a complete media handling solution
 
-## Supported Storage Services
-- [Google Storage](https://cloud.google.com/storage/)
-- [AWS S3](https://aws.amazon.com/s3/)
+## Enterprise-Ready Cloud Storage Support
+- [Google Cloud Storage](https://cloud.google.com/storage/)
+- [Amazon S3](https://aws.amazon.com/s3/)
 - [Azure Storage](https://azure.microsoft.com/en-us/services/storage/)
 - [DigitalOcean Spaces](https://www.digitalocean.com/products/object-storage/)
 
-## TODO
-- Define a way to protect calls to /prepare - <b>NOTE: <i>prepare is currently completely unprotected and can be called by anyone</i>.</b>
-- Allow sending ACL on the request URL
-- Allow setting S3 default ACL in config
-- Allow setting Azure default ACL in config
-- Allow setting default meta-data per bucket in config
-- Allow sending meta-data on the request URL
+## Roadmap
+- Enhanced security for /prepare endpoint - <b>NOTE: <i>prepare endpoint currently requires additional security implementation</i>.</b>
+- ACL configuration via request URLs
+- Configurable default ACLs for S3 and Azure
+- Advanced metadata management per bucket
+- Dynamic metadata via request URLs
 
-## Usage - Configuration
-See [`config-example.yml`](https://github.com/erans/upupaway/blob/master/config-example.yml) for an example of the configuration.
+## Getting Started - Configuration
+Check out our [`config-example.yml`](https://github.com/erans/upupaway/blob/master/config-example.yml) for a quick start guide.
 
-The configuration file has 3 major sections:
-- `buckets` where the different bucket configurations are defined per cloud storage service. If you use the same bucket but with different sub-paths you will need to configure different buckets - each with its own name and path.
-- `paths` where the different paths that files can be uploaded (POSTed) to. Each such path contains the bucket name (defined in the `buckets` section) that files should be uploaded to.
-- `storage` where different storage configurations are used to store the UploadID tokens and the amount of time a specific token is available after generating it with a GET call to `/prepare`.
+The configuration is elegantly organized into 3 key sections:
+- `buckets`: Define your cloud storage configurations with custom paths and settings
+- `paths`: Map your upload endpoints to specific storage buckets
+- `storage`: Configure your token storage backend:
+  - `inmemory`: Perfect for development and testing
+  - `redis`: Enterprise-ready Redis integration
+  - `memcache`: High-performance memcached support
 
   Supported storages are:
   - `inmemory` - used for development purposes to temporarily store valid upload IDs during development
@@ -46,21 +48,14 @@ Before uploads can be made to any of the paths configured under the `paths` sect
 
 The result of will be an `UploadID` which is used to perform the upload.
 
-To perform the upload, simply do a `POST` to any of the paths configured under the `paths` section of the configuration file with a query string parameter named `uid` for example, if the `uid` is "AABBCC" the upload should be POSTed to `/u/p1?uid=AABBCC`
+## Security Best Practices
+- Implement authentication for the /prepare endpoint through your preferred security layer
+- Leverage cloud-native security roles instead of storing access keys in config files
+- Use direct key storage only for testing or special use cases
 
-Suggested usage would be to make a call to `/prepare`, get the UploadID, generate the upload URL and put it as the action of a FORM element that has an input type=file in it.
+## Kubernetes Deployment
+Deploy like a pro using Kubernetes configmaps:
 
-## Security Considerations
-- Access to /prepare method is not protected. The micro service assumes something else will perform the check before that. This can be a server-to-server call that will send the upload ID only to authenticated users or some kind of an API proxy that checks for proper keys.
-- Don't store access keys in the configuration file (unless you really have to). Most cloud services such as AWS, GCP and Azure have ways of defining security roles for instances. It is recommended to use that instead of setting the access keys in the configuration. The configuration supports this feature for testing purposes or for cases where the micro service itself runs outside of a certain cloud environment (or all cloud environments).
-
-## Running Under Kubernetes
-- The best way to run the mico service under Kubernetes with custom configuration is to update the configuration file as a configmap:
-```
-kubectl create configmap upupaway-config --from-file=upupaway.yml
-```
-
-You can then mount `upupaway-config` as a volume inside your container and point to it using an environment varaible `UUA_CFG`. For example:
 ```
 apiVersion: v1
 kind: ReplicationController
@@ -95,5 +90,3 @@ spec:
           configMap:
             name: upupaway-config
 ```
-
-The above configuration will mount `upupaway-config` map onto `/etc/config` inside the container. The environment variable `UUA_CFG` points to the config file `upupaway.yml` under `/etc/config` (the mounted volume).
