@@ -1,6 +1,8 @@
 module github.com/erans/upupaway
 
-go 1.23.3
+go 1.24
+
+toolchain go1.24.1
 
 require (
 	cloud.google.com/go/storage v1.47.0
