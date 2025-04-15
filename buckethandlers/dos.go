@@ -7,7 +7,7 @@ import (
 	"path"
 
 	"github.com/erans/upupaway/utils"
-	"github.com/labstack/echo"
+	"github.com/labstack/echo/v4"
 	minio "github.com/minio/minio-go"
 )
 

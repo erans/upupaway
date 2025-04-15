@@ -10,7 +10,7 @@ import (
 	"github.com/aws/aws-sdk-go/aws/session"
 	"github.com/aws/aws-sdk-go/service/s3"
 	"github.com/erans/upupaway/utils"
-	"github.com/labstack/echo"
+	"github.com/labstack/echo/v4"
 )
 
 // AWSS3 implements the AWS S3 bucket handler interface

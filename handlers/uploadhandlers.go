@@ -10,7 +10,7 @@ import (
 	"github.com/erans/upupaway/context"
 	"github.com/erans/upupaway/storage"
 	"github.com/erans/upupaway/utils"
-	"github.com/labstack/echo"
+	"github.com/labstack/echo/v4"
 )
 
 type prepareResponse struct {

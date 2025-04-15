@@ -7,7 +7,7 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob"
 	"github.com/erans/upupaway/utils"
-	"github.com/labstack/echo"
+	"github.com/labstack/echo/v4"
 )
 
 // AzureStorage implements the Azure Storage container interface

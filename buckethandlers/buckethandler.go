@@ -4,7 +4,7 @@ import (
 	"mime/multipart"
 
 	"github.com/erans/upupaway/config"
-	"github.com/labstack/echo"
+	"github.com/labstack/echo/v4"
 )
 
 var bucketsRegistry = map[string]BucketHandler{}
